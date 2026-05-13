@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misterio en el Palacio</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+   <div class="contenedor-principal">
+        <header>
+            <h1>Misterio en el Palacio</h1>
+            <p id="subtitulo">Un crimen ha ocurrido. Usa tu lógica para encontrar la verdad.</p>
+        </header>
+
+        <main class="tablero">
+            
+            <!-- 1. PANTALLA DE INICIO -->
+            <div id="pantalla-inicio">
+                <p class="intro-texto">Las pesadas puertas del palacio se han cerrado con llave. Nadie entra y nadie sale. Uno de los presentes es el culpable de este atroz acto.</p>
+                <p class="intro-texto">Recorre los pasillos, reúne las pistas y usa tu sistema lógico para dar con el responsable.</p>
+                <button class="btn-principal" onclick="comenzarJuego()">Comenzar Juego</button>
+            </div>
+
+            <!-- 2. PANTALLA DE NARRATIVA -->
+            <div id="pantalla-narrativa" class="oculto">
+                <h2 id="titulo-caso" style="color: #d4af37; margin-bottom: 20px;"></h2>
+                <div id="texto-narrativa" class="intro-texto" style="min-height: 150px;">
+                </div>
+                
+                <div class="controles-narrativa" style="display: flex; justify-content: space-between; margin-top: 30px;">
+                    <button id="btn-atras" class="btn-principal" onclick="cambiarParte(-1)" style="padding: 10px 20px;">Atrás</button>
+                    <button id="btn-siguiente" class="btn-principal" onclick="cambiarParte(1)" style="padding: 10px 20px;">Siguiente</button>
+                </div>
+            </div>
+
+           <!-- 3. PANTALLA DE INTERROGATORIO -->
+            <div id="pantalla-interrogatorio" class="oculto">
+                <h2 style="color: #d4af37;">Sala de Interrogatorio</h2>
+                <p class="intro-texto" style="margin-bottom: 10px;">Preguntas restantes: <span id="contador-preguntas" style="color: #4CAF50; font-weight: bold; font-size: 1.5rem;">5</span></p>
+                
+                
+                <div id="lista-sospechosos" style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap;">
+                    
+                </div>
+
+                
+                <div id="contenedor-preguntas" class="oculto" style="background: #2a2a2a; padding: 20px; border-radius: 5px; text-align: left; margin-bottom: 20px;">
+                    <h3 id="nombre-sospechoso" style="color: #d4af37; margin-bottom: 15px;"></h3>
+                    <div id="lista-preguntas" style="display: flex; flex-direction: column; gap: 10px;">
+                        
+                    </div>
+                </div>
+
+               
+                <div id="registro-respuestas" style="background: #1e1e1e; padding: 15px; border-left: 3px solid #d4af37; text-align: left; min-height: 100px; margin-bottom: 20px;">
+                    <p id="texto-respuesta" style="color: #a0a0a0; font-style: italic;">Selecciona a un sospechoso y haz una pregunta para ver su respuesta aquí.</p>
+                </div>
+
+                <button class="btn-principal" onclick="irAInspeccion()">Ir a Inspeccionar Escenas</button>
+            </div>
+
+           
+            <div id="pantalla-inspeccion" class="oculto">
+                <h2 style="color: #d4af37;">Inspección de Escenas</h2>
+                <p class="intro-texto" style="margin-bottom: 10px;">Zonas restantes para revisar: <span id="contador-zonas" style="color: #4CAF50; font-weight: bold; font-size: 1.5rem;">3</span></p>
+                
+                
+                <div id="cuadricula-zonas" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                   
+                </div>
+
+               
+                <div id="resultado-inspeccion" class="oculto" style="background: #1e1e1e; padding: 20px; border-left: 3px solid #4CAF50; text-align: left; margin-bottom: 20px;">
+                    <h3 id="titulo-zona-inspeccionada" style="color: #d4af37; margin-bottom: 10px;"></h3>
+                    <p id="texto-zona-inspeccionada" style="color: #e0e0e0; font-family: Arial, sans-serif; line-height: 1.5;"></p>
+                </div>
+
+                <button class="btn-principal" style="margin-top: 10px;" onclick="irAAcusacion()">Hacer Acusación Final</button>
+            </div>
+
+            
+            <div id="pantalla-juego" class="oculto">
+                <div class="seccion-deduccion">
+                    
+                    <div class="opcion">
+                        <label for="personaje">¿Quién es el culpable?</label>
+                        <select id="personaje">
+                            <option value="" disabled selected>Selecciona un sospechoso...</option>
+                            <option value="Rey">El Rey</option>
+                            <option value="Reina">La Reina</option>
+                            <option value="Perro">El Perro</option>
+                            <option value="Jardinero">El Jardinero</option>
+                            <option value="Empleada Doméstica">La Empleada Doméstica</option>
+                        </select>
+                    </div>
+
+                    <div class="opcion">
+                            <label for="arma">¿Qué arma se utilizó?</label>
+                            <select id="arma">
+                            <option value="" disabled selected>Selecciona un arma...</option>
+                            <option value="Copa Envenenada">Copa Envenenada</option>
+                            <option value="Pluma Envenenada">Pluma con punta envenenada</option>
+                            <option value="Cuchillo de Plata">Cuchillo de Plata</option>
+                            <option value="Tijeras de Podar">Tijeras de Podar</option>
+                            <option value="Mordida Rabiosa">Mordida Rabiosa</option>
+                        </select>
+                    </div>
+
+                    <div class="opcion">
+                        <label for="locacion">¿Dónde ocurrió?</label>
+                        <select id="locacion">
+                            <option value="" disabled selected>Selecciona una locación...</option>
+                            <option value="Cocina">Cocina</option>
+                            <option value="Comedor">Comedor</option>
+                            <option value="Salón de Fiestas">Salón de Fiestas</option>
+                            <option value="Jardín">Jardín</option>
+                            <option value="Baño">Baño</option>
+                        </select>
+                    </div>
+
+                    <button class="btn-acusar" onclick="hacerAcusacion()">Hacer Acusación</button>
+                </div>
+
+                <!-- Panel de Resultados -->
+                <div id="resultado-panel" class="oculto">
+                    <h2 id="titulo-resultado"></h2>
+                    <p id="mensaje-resultado"></p>
+                    <button class="btn-reiniciar oculto" id="btn-reiniciar" onclick="reiniciarJuego()">Jugar de Nuevo</button>
+                </div>
+            </div>
+
+        </main>
+   </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
